@@ -28,6 +28,8 @@ body {
   background-repeat: no-repeat;
   background-size: 50px 50px;
   position: absolute;
+  z-index: 3;
+  pointer-events: none;
 }
 
 .shootingArea {

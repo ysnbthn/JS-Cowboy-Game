@@ -10,23 +10,17 @@ var score = 0;
 for (var i = 0; i<badGuys.length; i++) {
     badGuys[i].addEventListener('click', clickCallBack);
 }
-
+// shooting bad guys
 function clickCallBack(e) {
 
-    var targetArea = e.target.getBoundingClientRect();
+    //console.log("hit!");   
+    //console.log(e.target.id);
 
-    console.log(targetArea);
-    console.log(e.clientX, e.clientY);
-
-    console.log(e.target.id);
+    score += 100;
+    document.querySelector('.scoreText').innerText = `Score: ${score}`;
 }
 
-
-
-
 //console.log(saCoordinates.top, saCoordinates.left, saCoordinates.right, saCoordinates.bottom);
-
-
 
 // aim movement
 shootingArea.addEventListener('mousemove', function(e){
@@ -55,13 +49,54 @@ aim.addEventListener('click', e=> {
     document.querySelector('#dbt2').textContent = `Click X: ${e.clientX}, Click Y: ${e.clientY}`;
 });
 
-function addScore(scr){
-    scr += 100;
-    document.querySelector('.scoreText').innerText = `Score: ${scr}`;
+
+
+
+function startGame(time, difficulty){
+    score = 0;
+    startTimer(time, document.querySelector('#timeText'));
+
+
 }
 
-    
+startGame(15, "easy");
 
+function popBGs(difficulty){
+
+
+    var time = difficulty == "hard" ? 300 : difficulty == "medium" ? 500 : 800;
+    var previous = 0; 
+
+    setInterval(() => {
+
+        var random = Math.floor(Math.random() * 5) + 1;
+        var target = document.getElementById(`bg${random}`);
+        target.style.display = none;
+        previous = random;
+
+    }, time);
+}
+
+
+function startTimer(duration, display) {
+
+    var timer = duration, seconds;
+    var myTimer = setInterval(function () {
+        
+        seconds = parseInt(timer % 60, 10);
+
+        if(timer > 0){
+            seconds = seconds < 10 ? "" + seconds : seconds;
+            display.textContent = "Time: " +  seconds;
+            timer --;
+        }else{
+            display.textContent = "Time: 0";
+            //console.log("k");
+            clearInterval(myTimer);
+        }
+
+    }, 1000);
+}
 
 
 

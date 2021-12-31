@@ -128,7 +128,7 @@ async function startTimer(duration, display) {
             if(confirm(text)){
                 startGame(difficulty);
             }else{
-                location.href = "/index.html";
+                history.back();
             }
 
             

@@ -77,7 +77,7 @@ function popBGs(){
         }
         
         var random = selectRandom(previous);
-        var target = document.getElementById(`bg${random}`);
+        var target = random ? document.getElementById(`bg${random}`) : document.getElementById(`bg${1}`);
         target.style.visibility = "visible";
     }, time);
     
@@ -122,9 +122,16 @@ async function startTimer(duration, display) {
             for(var i =0; i<5;i++){ 
                 badGuys[i].removeEventListener('click', ()=>{} ); 
             }
-            alert(`Game Over! \nYour Score is : ${score} \nTry Again?`);
 
-            startGame(difficulty);
+            let text = `Game Over! \nYour Score is : ${score} \nTry Again?`;
+
+            if(confirm(text)){
+                startGame(difficulty);
+            }else{
+                location.href = "/index.html";
+            }
+
+            
         }
 
     }, 1000);

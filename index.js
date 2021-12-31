@@ -26,8 +26,13 @@ shootingArea.addEventListener('mousemove', function(e){
 aim.addEventListener('click', e=> {
     
     const aimCoordinates = aim.getBoundingClientRect();
+    var clickedTarget = e.target;
+    var targetCoordinates = clickedTarget.getBoundingClientRect();
     
-
+    
+    
+    
+    document.querySelector('#dbt2').textContent = `Click X: ${e.clientX}, Click Y: ${e.clientY}`; 
 });
 
     

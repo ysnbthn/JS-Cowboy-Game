@@ -13,24 +13,22 @@
 </head>
 <body>
 
-    <div class="shootingArea">
-        <!-- for debugging -->
-        <p class="debugText" id="dbt1">Aim X : 0, Aim Y : 0</p>
-        <p class="debugText" id="dbt2">Click X : 0, Click Y : 0</p>
-        <p class="scoreText">Score: 0</p>
-        <p id="timeText">Time: 0</p>
+    <div class="start" id="home">
+        <h1>Welcome to Wild West Game</h1>
+        <br><br><br>
+        <button onclick="start(this.id)" id="easy" class="startbtn"> EASY </button>
+        <button onclick="start(this.id)" id="medium" class="startbtn"> MEDIUM </button>
+        <button onclick="start(this.id)" id="hard" class="startbtn"> HARD </button>
 
-        <!-- bad guys -->
-        <div class="badGuy" id="bg1"></div>
-        <div class="badGuy" id="bg2"></div>
-        <div class="badGuy" id="bg3"></div>
-        <div class="badGuy" id="bg4"></div>
-        <div class="badGuy" id="bg5"></div>
-
-        <div class="aim"></div>
     </div>
-    
-    <script src="index.js"></script>
+
+    <script>
+        sessionStorage.setItem('difficulty', ''); 
+
+        function start(id) { 
+            sessionStorage.setItem('difficulty', id); 
+            location.href='game.html'; }
+    </script>
 </body>
 </html>
 

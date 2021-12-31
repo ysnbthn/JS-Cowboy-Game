@@ -1,23 +1,28 @@
+// FIX RANDOM JUMPING PROBLEM
+
 const shootingArea = document.querySelector('.shootingArea');
+const welcome = document.querySelector('.start');
 const aim = document.querySelector('.aim');
 const badGuys = document.getElementsByClassName('badGuy');
 const saCoordinates = shootingArea.getBoundingClientRect();
 
 var score = 0;
+const difficulty = sessionStorage.getItem('difficulty');
+var time = difficulty == "hard" ? 500 : difficulty == "medium" ? 700 : 1000;
 
-//console.log(badGuys);
-
-for (var i = 0; i<badGuys.length; i++) {
-    badGuys[i].addEventListener('click', clickCallBack);
+for(var i =0; i<5;i++){
+    badGuys[i].addEventListener('click', handleClick);
 }
+
 // shooting bad guys
-function clickCallBack(e) {
+async function handleClick(e) {
 
     //console.log("hit!");   
     //console.log(e.target.id);
 
-    score += 100;
+    score += 1;
     document.querySelector('.scoreText').innerText = `Score: ${score}`;
+    //popBGs();
 }
 
 //console.log(saCoordinates.top, saCoordinates.left, saCoordinates.right, saCoordinates.bottom);
@@ -28,10 +33,9 @@ shootingArea.addEventListener('mousemove', function(e){
     //console.log(e); // debug
 
     // because aim size (50 * 50) px
-    if(e.pageY +50 >= saCoordinates.top && e.pageY +50 <= saCoordinates.bottom && e.pageX +50 >= saCoordinates.left && e.pageX +50 <= saCoordinates.right){
+    if(e.clientY +50 >= saCoordinates.top && e.clientY +50 <= saCoordinates.bottom && e.clientX +50 >= saCoordinates.left && e.clientX +50 <= saCoordinates.right){
         aim.style.left = e.clientX + 'px';
         aim.style.top = e.clientY + 'px';
-
 
         // For debug
         document.querySelector('#dbt1').textContent = `Aim X: ${e.clientX}, Aim Y: ${e.clientY}`; 
@@ -44,59 +48,93 @@ aim.addEventListener('click', e=> {
     var clickedTarget = e.target;
     var targetCoordinates = clickedTarget.getBoundingClientRect();
     
-    console.log(e.target);
+    //console.log(e.target);
     
     document.querySelector('#dbt2').textContent = `Click X: ${e.clientX}, Click Y: ${e.clientY}`;
 });
 
 
+function startGame(difficulty){
 
+    clearInterval(startTimer);
+    var gameTime = difficulty === "hard" ? 14 : difficulty == "medium" ? 29 : 59;
 
-function startGame(time, difficulty){
     score = 0;
-    startTimer(time, document.querySelector('#timeText'));
+    
+    startTimer(gameTime, document.querySelector('#timeText'));
 
+    popBGs();
 
 }
 
-startGame(15, "easy");
+var previous = 0; 
+var x;
+function popBGs(){
 
-function popBGs(difficulty){
-
-
-    var time = difficulty == "hard" ? 300 : difficulty == "medium" ? 500 : 800;
-    var previous = 0; 
-
-    setInterval(() => {
-
-        var random = Math.floor(Math.random() * 5) + 1;
+    x= setInterval(function(){
+        for(var i = 1; i <6; i++){
+            document.getElementById(`bg${i}`).style.visibility = 'hidden';
+        }
+        
+        var random = selectRandom(previous);
         var target = document.getElementById(`bg${random}`);
-        target.style.display = none;
-        previous = random;
-
+        target.style.visibility = "visible";
     }, time);
+    
+}
+
+function selectRandom(last){
+
+    var arr = [1,2,3,4,5];
+    var rand = arr[Math.floor(Math.random() * 5)];
+
+    //console.log(rand);
+
+    if(rand != last){
+        previous = rand;
+        return rand;
+    }else{
+        selectRandom(previous);
+    }
+
 }
 
 
-function startTimer(duration, display) {
+async function startTimer(duration, display) {
 
     var timer = duration, seconds;
     var myTimer = setInterval(function () {
         
         seconds = parseInt(timer % 60, 10);
 
-        if(timer > 0){
-            seconds = seconds < 10 ? "" + seconds : seconds;
+        if(timer >= 0){
+            
             display.textContent = "Time: " +  seconds;
+            display.style.color = timer > 5 ? "black" : "red";
             timer --;
         }else{
             display.textContent = "Time: 0";
             //console.log("k");
+            clearInterval(startTimer);
             clearInterval(myTimer);
+            clearInterval(x);
+
+            for(var i =0; i<5;i++){ 
+                badGuys[i].removeEventListener('click', ()=>{} ); 
+            }
+            alert(`Game Over! \nYour Score is : ${score} \nTry Again?`);
+
+            startGame(difficulty);
         }
 
     }, 1000);
 }
 
+function start(variable){
 
+    location.href = "game.html";
+}
 
+if(difficulty){
+    startGame(difficulty);
+}

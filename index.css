@@ -3,22 +3,24 @@
 }
 
 body {
-  background-color: gray;
+  background-color: #3a160e;
+  font-family: "Rye", cursive;
 }
 
 .debugText {
   color: black;
+  position: relative;
+  display: none;
 }
 
 .scoreText {
   margin-left: 390px;
-  margin-top: -5px;
+  margin-top: 60px;
   font-size: 1.1rem;
   position: absolute;
   transform: perspective(300px) rotateY(-40deg) rotate(-0.07turn);
   transform-origin: bottom left;
   color: black;
-  font-family: "Rye", cursive;
 }
 
 .aim {
@@ -28,8 +30,14 @@ body {
   background-repeat: no-repeat;
   background-size: 50px 50px;
   position: absolute;
-  z-index: 3;
+  z-index: 2;
   pointer-events: none;
+}
+
+#timeText {
+  color: black;
+  font-family: "Rye", cursive;
+  font-size: 1.5rem;
 }
 
 .shootingArea {
@@ -43,14 +51,38 @@ body {
   background-image: url("Media/wild-west.webp");
 }
 
+.start {
+  background-color: #c3976a;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
+  height: 25%;
+  text-align: center;
+  border-radius: 10px;
+  padding: 3%;
+  border: 3px solid #3a160e;
+}
+
+.startbtn {
+  height: 60px;
+  width: 200px;
+  border-radius: 10px;
+  background-color: #924a36;
+  color: #d9d7c7;
+  font-family: "Rye", cursive;
+  font-size: 1.2rem;
+  border: 1px solid #3a160e;
+  margin-top: 20px;
+}
+
 .badGuy {
   height: 125px;
   width: 125px;
   background-image: url("Media/badGuy.png");
   background-repeat: no-repeat;
   background-size: 125px 125px;
-  z-index: 2;
-  /*display: none;*/
+  visibility: hidden;
 }
 
 #bg1 {

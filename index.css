@@ -13,6 +13,45 @@ body {
   display: none;
 }
 
+.bulletContainer {
+  background-color: #c3976a;
+  width: 200px;
+  height: 75px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.bullet {
+  background-image: url(Media/bullet.png);
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 100px;
+  background-size: 25px 75px;
+  margin-right: 5px;
+
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.reload {
+  width: 150px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #924a36;
+  color: #d9d7c7;
+  font-family: "Rye", cursive;
+  font-size: 1.7rem;
+  border: 1px solid #3a160e;
+  margin-top: 10px;
+  display: none;
+}
+
 .scoreText {
   margin-left: 390px;
   margin-top: 60px;
@@ -53,6 +92,7 @@ body {
   height: 600px;
   cursor: none;
   background-image: url("Media/wild-west.webp");
+  position: relative;
 }
 
 .start {
@@ -75,7 +115,7 @@ body {
   background-color: #924a36;
   color: #d9d7c7;
   font-family: "Rye", cursive;
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   border: 1px solid #3a160e;
   margin-top: 20px;
 }

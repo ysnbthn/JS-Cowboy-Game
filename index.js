@@ -7,15 +7,37 @@ const badGuys = document.getElementsByClassName('badGuy');
 const saCoordinates = shootingArea.getBoundingClientRect();
 
 var score = 0;
+var bullets = 6;
+
 const difficulty = sessionStorage.getItem('difficulty');
 var time = difficulty == "hard" ? 500 : difficulty == "medium" ? 700 : 1000;
 
+// add event listener to bad guys
 for(var i =0; i<5;i++){
     badGuys[i].addEventListener('click', handleClick);
 }
 
+shootingArea.addEventListener('click', (e) =>{
+
+    if(bullets > 0){
+    bullets -= 1;
+    var blt = document.getElementsByClassName('bullet');
+    blt[bullets].style.display = 'none';
+
+    }
+    if(bullets== 0){
+        aim.style.pointerEvents = 'visible';
+        document.querySelector('.reload').style.display = "block";
+    }
+}
+);
+
+function reload(){
+    console.log('clicked');
+}
+
 // shooting bad guys
-async function handleClick(e) {
+function handleClick(e) {
 
     //console.log("hit!");   
     //console.log(e.target.id);
@@ -31,11 +53,13 @@ async function handleClick(e) {
 shootingArea.addEventListener('mousemove', function(e){
     
     //console.log(e); // debug
-
+    
     // because aim size (50 * 50) px
     if(e.clientY +50 >= saCoordinates.top && e.clientY +50 <= saCoordinates.bottom && e.clientX +50 >= saCoordinates.left && e.clientX +50 <= saCoordinates.right){
-        aim.style.left = e.clientX + 'px';
-        aim.style.top = e.clientY + 'px';
+        aim.style.position = "absolute";
+        // Because shooting area postiion is relative now
+        aim.style.left = e.clientX - saCoordinates.left + 'px';
+        aim.style.top = e.clientY - saCoordinates.top + 'px';
 
         // For debug
         document.querySelector('#dbt1').textContent = `Aim X: ${e.clientX}, Aim Y: ${e.clientY}`; 

@@ -4,7 +4,8 @@ const shootingArea = document.querySelector('.shootingArea');
 const welcome = document.querySelector('.start');
 const aim = document.querySelector('.aim');
 const badGuys = document.getElementsByClassName('badGuy');
-const saCoordinates = shootingArea.getBoundingClientRect();
+const reloadBtn = document.querySelector('.reload');
+
 
 var score = 0;
 var bullets = 6;
@@ -17,22 +18,42 @@ for(var i =0; i<5;i++){
     badGuys[i].addEventListener('click', handleClick);
 }
 
-shootingArea.addEventListener('click', (e) =>{
+shootingArea.addEventListener('click', shootHandler);
 
-    if(bullets > 0){
-    bullets -= 1;
-    var blt = document.getElementsByClassName('bullet');
-    blt[bullets].style.display = 'none';
-
-    }
-    if(bullets== 0){
-        aim.style.pointerEvents = 'visible';
-        document.querySelector('.reload').style.display = "block";
-    }
+function shootHandler(e){
+    
+        if(bullets > 0){
+        bullets -= 1;
+        let blt = document.getElementsByClassName('bullet');
+        blt[bullets].style.display = 'none';
+    
+        }
+        if(bullets== 0){
+            aim.style.pointerEvents = 'visible';
+            reloadBtn.style.display = "block";
+        }
 }
-);
 
-function reload(){
+reloadBtn.addEventListener('click',reload);
+
+function reload(e){
+
+    let blt = document.getElementsByClassName('bullet');
+    e.target.style.display = 'none';
+
+    shootingArea.removeEventListener('click', shootHandler);
+    let reloading = setInterval(() =>{
+        e.target.style.display = 'none';
+        if(bullets <6 ){
+            blt[bullets].style.display = "block";
+            bullets += 1; 
+        }else{
+            shootingArea.addEventListener('click', shootHandler);
+            aim.style.pointerEvents = 'none';
+            clearInterval(reloading);
+        }
+    }, 500);
+
     console.log('clicked');
 }
 
@@ -53,6 +74,7 @@ function handleClick(e) {
 shootingArea.addEventListener('mousemove', function(e){
     
     //console.log(e); // debug
+    const saCoordinates = shootingArea.getBoundingClientRect();
     
     // because aim size (50 * 50) px
     if(e.clientY +50 >= saCoordinates.top && e.clientY +50 <= saCoordinates.bottom && e.clientX +50 >= saCoordinates.left && e.clientX +50 <= saCoordinates.right){
@@ -150,7 +172,7 @@ async function startTimer(duration, display) {
             let text = `Game Over! \nYour Score is : ${score} \nTry Again?`;
 
             if(confirm(text)){
-                startGame(difficulty);
+                location.reload();
             }else{
                 history.back();
             }

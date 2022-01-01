@@ -6,9 +6,10 @@ const aim = document.querySelector('.aim');
 const badGuys = document.getElementsByClassName('badGuy');
 const reloadBtn = document.querySelector('.reload');
 
-
 var score = 0;
 var bullets = 6;
+
+const reloadS = new Audio("Sounds/ReloadSound.mp3");
 
 const difficulty = sessionStorage.getItem('difficulty');
 var time = difficulty == "hard" ? 500 : difficulty == "medium" ? 700 : 1000;
@@ -32,15 +33,27 @@ for(var i =0; i<5;i++){
 
 shootingArea.addEventListener('click', shootHandler);
 
+async function playGunS(target){
+    if(target === "fire"){
+        const gunFire = new Audio("Sounds/Gunfire.mp3");
+        gunFire.play();
+    }else{
+        const empty = new Audio("Sounds/Empty.mp3");
+        empty.play();
+    }
+}
+
 function shootHandler(e){
     
         if(bullets > 0){
+        playGunS("fire");
         bullets -= 1;
         let blt = document.getElementsByClassName('bullet');
         blt[bullets].style.display = 'none';
     
         }
         if(bullets== 0){
+            playGunS("empty");
             aim.style.pointerEvents = 'visible';
             reloadBtn.style.display = "block";
         }
@@ -52,15 +65,16 @@ reloadBtn.addEventListener('mouseover',()=>{
 });
 
 function reload(e){
-
+    
     let blt = document.getElementsByClassName('bullet');
     e.target.style.display = 'none';
-
+    
     shootingArea.removeEventListener('click', shootHandler);
     addOrRemoveBGLs("remove");
 
+    reloadS.play();
+
     let reloading = setInterval(() =>{
-        e.target.style.display = 'none';
         if(bullets <6 ){
             blt[bullets].style.display = "block";
             bullets += 1; 
@@ -70,7 +84,7 @@ function reload(e){
             addOrRemoveBGLs("add");
             clearInterval(reloading);
         }
-    }, 500);
+    }, 300);
 
     console.log('clicked');
 }
@@ -167,12 +181,14 @@ function selectRandom(last){
 async function startTimer(duration, display) {
 
     var timer = duration, seconds;
+    
+    const empty = new Audio("Sounds/InGame.mp3");
+    empty.play();
+    
     var myTimer = setInterval(function () {
         
         seconds = parseInt(timer % 60, 10);
-
         if(timer >= 0){
-            
             display.textContent = "Time: " +  seconds;
             display.style.color = timer > 5 ? "black" : "red";
             timer --;
@@ -195,11 +211,6 @@ async function startTimer(duration, display) {
     }, 1000);
 }
 
-function start(variable){
-
-    location.href = "game.html";
-}
-
 if(difficulty){
-    startGame(difficulty);
+    setTimeout(startGame(difficulty), 1500);
 }

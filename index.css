@@ -59,6 +59,11 @@ body {
   transform: perspective(300px) rotateY(-40deg) rotate(-0.07turn);
   transform-origin: bottom left;
   color: black;
+
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 .aim {

@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
 </head>
-<body>
+<body onload="entrance();">
 
     <div class="start" id="home">
         <h1>Welcome to Wild West Game</h1>
@@ -27,7 +27,17 @@
 
         function start(id) { 
             sessionStorage.setItem('difficulty', id); 
-            location.href='game.html'; }
+            var a = new Audio("Sounds/Gunfire.mp3");
+            a.play();
+            setTimeout(()=>{
+                location.href='game.html'; 
+            },800);
+        }
+
+        function entrance(){
+            const entrance = new Audio("Sounds/WelcomeMusic.mp3");
+            entrance.play();
+        }
     </script>
 </body>
 </html>

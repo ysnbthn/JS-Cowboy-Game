@@ -14,6 +14,18 @@ const difficulty = sessionStorage.getItem('difficulty');
 var time = difficulty == "hard" ? 500 : difficulty == "medium" ? 700 : 1000;
 
 // add event listener to bad guys
+function addOrRemoveBGLs(text){
+    if(text === "add"){
+        for(var i =0; i<5;i++){
+            badGuys[i].addEventListener('click', handleClick);
+        }
+    }else{
+        for(var i =0; i<5;i++){
+            badGuys[i].removeEventListener('click', handleClick);
+        }
+    }
+}
+
 for(var i =0; i<5;i++){
     badGuys[i].addEventListener('click', handleClick);
 }
@@ -35,6 +47,9 @@ function shootHandler(e){
 }
 
 reloadBtn.addEventListener('click',reload);
+reloadBtn.addEventListener('mouseover',()=>{
+    aim.style.pointerEvents = 'none';
+});
 
 function reload(e){
 
@@ -42,6 +57,8 @@ function reload(e){
     e.target.style.display = 'none';
 
     shootingArea.removeEventListener('click', shootHandler);
+    addOrRemoveBGLs("remove");
+
     let reloading = setInterval(() =>{
         e.target.style.display = 'none';
         if(bullets <6 ){
@@ -50,6 +67,7 @@ function reload(e){
         }else{
             shootingArea.addEventListener('click', shootHandler);
             aim.style.pointerEvents = 'none';
+            addOrRemoveBGLs("add");
             clearInterval(reloading);
         }
     }, 500);
@@ -108,7 +126,7 @@ function startGame(difficulty){
     score = 0;
     
     startTimer(gameTime, document.querySelector('#timeText'));
-
+    addOrRemoveBGLs("add");
     popBGs();
 
 }
@@ -164,11 +182,7 @@ async function startTimer(duration, display) {
             clearInterval(startTimer);
             clearInterval(myTimer);
             clearInterval(x);
-
-            for(var i =0; i<5;i++){ 
-                badGuys[i].removeEventListener('click', ()=>{} ); 
-            }
-
+            addOrRemoveBGLs("remove");
             let text = `Game Over! \nYour Score is : ${score} \nTry Again?`;
 
             if(confirm(text)){
@@ -176,8 +190,6 @@ async function startTimer(duration, display) {
             }else{
                 history.back();
             }
-
-            
         }
 
     }, 1000);
